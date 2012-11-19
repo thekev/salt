@@ -284,7 +284,10 @@ class LocalClient(object):
         else:
             for fn_ret in self.get_iter_returns(pub_data['jid'],
                     pub_data['minions'],
-                    timeout):
+                    timeout or self.opts['timeout'],
+                    tgt,
+                    expr_form,
+                    **kwargs):
                 if not fn_ret:
                     continue
                 yield fn_ret
@@ -445,7 +448,14 @@ class LocalClient(object):
                 break
             time.sleep(0.01)
 
-    def get_iter_returns(self, jid, minions, timeout=None):
+    def get_iter_returns(
+            self,
+            jid,
+            minions,
+            timeout=None,
+            tgt='*',
+            tgt_type='glob',
+            **kwargs):
         '''
         This method starts off a watcher looking at the return data for
         a specified jid, it returns all of the information for the jid
