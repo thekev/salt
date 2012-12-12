@@ -854,6 +854,8 @@ class AESFuncs(object):
             ret = {'jid': load['jid'],
                    'id': key,
                    'return': item}
+            if 'out' in load:
+                ret['out'] = load['out']
             self._return(ret)
         if os.path.isfile(wtag):
             os.remove(wtag)
