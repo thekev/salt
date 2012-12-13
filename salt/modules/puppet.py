@@ -3,6 +3,7 @@ Execute puppet routines
 '''
 
 from salt import utils
+import yaml
 
 __outputter__ = {
     'run':  'txt',
@@ -117,3 +118,22 @@ def fact(name):
     if not ret:
         return ''
     return ret
+
+def last_run_summary():
+    '''
+    Dump the $vardir/state/last_run_summary.yaml
+
+    CLI Example::
+
+        salt '*' puppet.last_run_summary
+    '''
+    vardir = '/var/lib/puppet' #assumption - TODO don't assume
+    ret = {}
+
+    try:
+        ret = yaml.load( open('%s/state/last_run_summary.yaml' % vardir).read() )
+    except:
+        pass #silent for now
+
+    return ret
+
